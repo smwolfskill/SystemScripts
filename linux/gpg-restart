@@ -3,5 +3,7 @@
 # of all entered passphrases, among other things.
 # (Note: This will just stop gpg, and it will start back up automatically when needed)
 
-gpgconf --kill gpg-agent
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+gpgconf --kill gpg-agent
+"$SCRIPT_DIR"/ClearClipboard

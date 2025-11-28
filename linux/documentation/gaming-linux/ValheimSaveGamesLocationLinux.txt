@@ -1,0 +1,3 @@
+Valheim save games location on linux:
+
+~/.config/unity3d/IronGate/Valheim/

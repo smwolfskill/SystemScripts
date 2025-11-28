@@ -1,0 +1,4 @@
+Get current script's directory in bash, regardless of the caller's current directory:
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
