@@ -1,0 +1,13 @@
+#!/bin/bash
+# Use this script to delete old, no-longer-used snaps.
+# Apparently snaps is ubuntu's native package distribution service (or one of them at least),
+# similar to the custom package distribution service flatpak.
+#
+# This process is not done automatically by Ubuntu for some reason, although it keeps around only one old version by default.
+# this might be able to be changed via `sudo snap set system refresh.retain=[n]` where [n] is 2 by default; untested by me.
+#
+# View all snaps via:
+# `snap list --all | less`
+
+LANG=C snap list --all | while read snapname ver rev trk pub notes; do if [[ $notes = *disabled* ]]; then sudo snap remove "$snapname" --revision="$rev"; fi; done
+

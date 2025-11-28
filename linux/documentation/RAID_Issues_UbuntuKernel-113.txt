@@ -1,0 +1,34 @@
+RAID ISSUES: Broken for kernel 5.15.0-113-generic on Ubuntu 20.04 and 22.04
+
+- Confirmed working with kernel 5.15.0-105-generic on 20.04; however this kernel will not load at all so far with Ubuntu 22.04
+- 5.15.0-136-generic can mount normal SATA drives after purging the packages below, but is having issues mounting the RAID drive on Ubuntu 22.04
+-- Still an issue even after re-enabling 3rd party packages as listed in the upgrade guide by uncommenting entries within /etc/apt/sources.list.d (oops).
+-- Problem is that the thopiekar base repo is outdated for kernels 5.15.113 and later. There is a fork after that that others claim works but it needs to be built from source.
+
+https://github.com/thopiekar/rcraid-dkms/pull/47
+
+1. `git clone https://github.com/MarkLTZ/rcraid-dkms/tree/latest`
+2. `cd rcraid-dkms`
+3. `git switch latest`
+4. `sudo ./install`
+- If fails, ensure you're on the latest branch which has a commit to fix the "GPL-incompatible module" issue
+- The build will fail for many of the old leftover kernels in /usr/lib/modules but this is fine. Just ensure it worked for your kernel version (`uname -r`)
+5. Reboot: 
+`sudo shutdown -r now`
+
+
+
+
+Packages to purge (`sudo apt-get purge [package]`):
+
+linux-image-5.15.0-113-generic
+linux-image-unsigned-5.15.0-113-generic
+linux-headers-5.15.0-113-generic'
+
+
+For Ubuntu 22.04 or kernels later than 5.15.0-113-generic:
+Packages to remove (sudo apt remove [package]):
+rcraid-dkms
+rcraid
+
+(since we are building the rcraid driver from src manually we want to remove the broken repo version we manually linked to in apt sources previously)

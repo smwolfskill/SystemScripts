@@ -1,0 +1,15 @@
+#!/bin/bash
+# Use this script to find and untar all compressed files in a given directory;
+# just that directory and not recursively.
+# The files will be unzipped to the same directory specified in $1,
+# and not the current directory calling this script.
+#
+# How to pipe stdout into an argument of another program:
+#   echo "myfile.tar" | xargs -I archive tar xvf archive
+# where tar xvf archive is the second program to run.
+
+set -e # abort if any cmd fails
+
+cd $1
+find | grep -E "\.tar$|\.tgz$|\.tar.gz$" | xargs -I archive tar xvf archive
+

@@ -1,0 +1,8 @@
+#!/bin/bash
+# List all installed packages that use the input parameter package(s);
+# in other words, reverse dependency.
+#
+# This is helpful when trying to determine if anything important depends on a given package before attempting to remove it from the system.
+
+apt-cache rdepends --installed $*
+

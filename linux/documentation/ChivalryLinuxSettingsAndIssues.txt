@@ -1,0 +1,8 @@
+Chivalry Medieval Warfare on Linux:
+
+Settings:
+- Prior to 6/21/25, used Proton8.0-5 w/o launch parameters
+
+Issues:
+- 6/21/25: Launches slowly but fine. While on the main menu and in-game, freezes for ~30 seconds every 5-10 seconds or so, especially when clicking UI elements. Was fine on the old configuration (proton8.0-5) when playing a couple days earlier on 6/18/25 :(
+

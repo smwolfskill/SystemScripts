@@ -1,0 +1,44 @@
+CLI to change NVIDIA Settings:
+In this example, sets:
+- Power Limit 125W
+- Mem Clock +2400 (shows as +1200 in GreenWithEnvy)
+- Core Clock -50
+- Manual Fan Control (1)
+- Fan Speed 80%
+
+NOTE: Exiting GreenWithEnvy resets NVIDIA settings back to default! (not even what's in the .nvidia-settings-rc file!)
+=========================
+sudo nvidia-smi -pl 125
+nvidia-settings -a GPUMemoryTransferRateOffset[4]=2400
+nvidia-settings -a GPUGraphicsClockOffset[4]=-50
+nvidia-settings -a GPUFanControlState=1
+nvidia-settings -a GPUTargetFanSpeed=80
+-------------------------
+Or, inside ~/.nvidia-settings-rc enter under Attributes:
+NOTE: These only activate after user login, not during boot.
+(You can put nvidia-smi commands but NOT nvidia-settings commands into a systemd auto-run
+service at boot. This is because nvidia-settings commands must have a display,
+which only initializes after a user logs in)
+- This is potentially problematic because the fan speed won't be set until after login
+ and could overheat! Need a way to have the display manager run the script after boot
+ and display initialization but before logging in.
+ 
+ 
+ 
+--------------------------
+# Custom OC:
+GPUMemoryTransferRateOffset[4]=2400
+GPUGraphicsClockOffset[4]=-50
+GPUFanControlState=1
+GPUTargetFanSpeed=80
+# End Custom OC
+
+and then
+nvidia-settings --load-config-only &
+
+to manually reload, or enter the above line inside /etc/X11/xinit/xinitrc
+to load upon startup for all users (UNTESTED)
+
+Update 1/17/22: changing xinitrc DOES NOT WORK because on
+Ubuntu 18.04 and 20.04 the display-manager used is gdm3 which does not
+use the xinitrc file at all; this is only relevant to certain other display managers. See /etc/gdm3/PreSession/Default script instead.

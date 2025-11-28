@@ -1,0 +1,4 @@
+#!/bin/bash
+
+stress-ng --cpu 24 --cpu-method float32 --metrics-brief --perf
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+# List default gateway to find what IP the router configuration is on
+# Look for "UG" flag
+
+route -n

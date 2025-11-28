@@ -1,0 +1,7 @@
+HP V240a Monitor Redshift settings
+==============================
+Brightness: 20
+R: 255
+G: 168
+B: 104
+

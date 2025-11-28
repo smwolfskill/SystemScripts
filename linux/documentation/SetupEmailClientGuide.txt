@@ -1,0 +1,136 @@
+How to set up email-sending client on Linux
+(assume for gmail account)
+====================================
+Google gmail settings
+---------------------
+https://support.google.com/accounts/answer/185833?hl=en#zippy=
+https://support.google.com/mail/answer/7126229?hl=en#zippy=%2Cstep-change-smtp-other-settings-in-your-email-client
+
+1. Enable 2-Step-Verification if not already enabled
+   in order to use App Passwords
+2. Generate app password just for the individual device
+   ***NOTE: app password given is visually shown with
+      spaces, but there are actually no spaces***
+      
+================================
+Installing and configuring ssmtp
+--------------------------------
+1. `sudo apt-get install ssmtp`
+
+2. `sudo nano /etc/ssmtp/ssmtp.conf`
+
+- Copy to file:
+root=[your gmail@gmail.com here]
+mailhub=smtp.gmail.com:465
+rewriteDomain=gmail.com
+AuthUser=[your gmail username here (without @gmail.com)]
+AuthPass=[app pass generated above, no spaces]
+FromLineOverride=YES
+UseTLS=YES
+
+- Verify port 465 above is correct via google's support doc above
+  for SSL port (not TLS port).
+- Comment out other lines that would conflict with the above.
+
+
+3. Send email with no additional CLI interaction:
+ssmtp [recipient@sthg] < [message.txt]
+
+==============================
+Sending email upon system boot (crontab)
+------------------------------
+1. `nano /home/scott/emailAutoMessages/boot_mail_msg.txt`
+
+Copy to file:
+To: [your gmail@gmail.com here]
+From: GS1 (gs1.dyndns-home.com)
+Subject: GS1 - Boot
+
+GS1 booted!
+
+(gs1.dyndns-home.com)
+
+
+2. `crontab -e`
+
+- Add line at top:    TODO verify ***
+MAILTO="[your gmail@gmail.com here]"
+
+-- (this is not needed for the reboot message,
+   but to receive emails of cron job failure messages)
+
+- Comment-out all lines that would intend to be run by the root user, e.g. 
+#17 *	* * *	root    cd / && run-parts --report /etc/cron.hourly
+
+this will only work properly in the system-wide crontab at /etc/crontab, while with `crontab -e` we are editing just the current user's
+crontab located at /var/spool/cron/crontabs/scott. See example user crontab.
+
+
+- Add line at bottom:
+@reboot (sleep 20; ssmtp [your gmail@gmail.com here] < /home/scott/emailAutoMessages/boot_mail_msg.txt)
+
+-- (I assume that network interfaces must be fully up before
+ smtp can successfully send mail, so allow 20s)
+ 
+- cron changes will be active once done editing crontab -e; all set!
+- Note: spaces vs. tabs do not matter in crontab.
+
+==============================
+Sending email upon system shutdown (systemd)
+https://askubuntu.com/questions/1335022/how-to-run-a-command-before-shutdown-on-ubuntu-21-04
+------------------------------
+1. `nano /home/scott/emailAutoMessages/shutdown_mail_msg.txt`
+
+Copy to file:
+To: [your gmail@gmail.com here]
+From: GS1 (gs1.dyndns-home.com)
+Subject: GS1 - Shutdown
+
+GS1 shutting down.
+
+(gs1.dyndns-home.com)
+
+
+2. Create script that will be run on shutdown
+sudo nano /usr/local/sbin/shutdownEmail
+
+Copy to file:
+#!/bin/bash
+# Run script with systemd at shutdown only 
+
+logLoc=/home/scott/shutdownEmail.log
+dateNow=$( date '+%D %R:%S' )
+
+echo -e "${dateNow}\tStarting shutdown" >> "$logLoc"
+ssmtp [your gmail@gmail.com here] < /home/scott/emailAutoMessages/shutdown_mail_msg.txt
+
+
+3. Give script execute permissions:
+sudo chmod a+x shutdownEmail 
+
+4. Create systemd service
+sudo nano /usr/local/sbin/shutdownEmail.service
+
+Copy to file:
+[Unit]
+Description=Run shutdownEmail notification task at shutdown & reboot only
+DefaultDependencies=no
+Before=halt.target shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/shutdownEmail
+RemainAfterExit=yes
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target
+
+5. Create symlink in systemd directory to service
+`sudo ln -s -T /usr/local/sbin/shutdownEmail.service /etc/systemd/system/shutdownEmail.service`
+
+6. `sudo systemctl daemon-reload`
+
+7. `sudo systemctl enable shutdownEmail`
+
+
+

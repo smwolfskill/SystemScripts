@@ -1,0 +1,27 @@
+Ubuntu 20.04 steps (so far) to set up multiseat with GPU Passthrough with NVIDIA + AMD GPU (passthrough just AMD GPU):
+----------------------------
+1. Enable BIOS settings given in the guide
+1.1. Disable XHCI Handoff under Advanced > USB settings. Once the iommu=pt grub option is set,
+     you will be able to boot but not able to use any USB devices (mouse, keyboard) if XHCI Handoff is true.
+2. Uninstall AMD's amdgpu driver and update /etc/X11/xorg.conf to comment-out any sections referring to amdgpu (i.e. device)
+3. Follow guide to update grub settings and reboot
+3.1. IMPORTANT: Boot into recovery mode after rebooting with "iommu=pt" to determine the IOMMU groups,
+     b/c amdgpu causes large system instability/unusability with this option until it is hidden from the primary OS 
+     by adding its IOMMU group(s) to be handled by the VFIO driver instead of amdgpu.
+     If you attempt to regular boot Ubuntu, you will observe bizarre behavior like:
+     Certain windows refuse to open, cryptic errors, amdgpu errors (`dmesg | grep -i amdgpu)` until revert grub setting "iommu=pt" back to "iommu=soft"
+4. Follow guide to observe that AMD GPU is being handled by vfio driver and NOT amdgpu:
+   `lspci -nnv | grep -B 10 -i "Kernel driver in use.*vfio" | less`
+5. Set up network bridge with nmcli (wired Ethernet only)
+6. Add "video=efifb:off" to GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub (do `sudo update-grub` after)
+   to avoid AMD driver error 43 after driver install on VM later
+6. Set up QEMU VM(s) with guide
+6.1. `virsh edit [VM name]`
+     To use the passed-through GPU connected to a monitor, need to comment-out (<!-- XML comment -->)
+     <video> and <spice> sections referring to simulated iGPU.
+7. Launch the VM, install Windows, and then install AMD Radeon drivers! Tiny resolution will be fixed.
+8. After shutting down VM, remove virtual SATA disk containing Windows 10 iso.
+
+WARNING: If mounting any drives, paths etc. on the VM, make sure they are not mounted on the host and NEVER
+mount them on the host while the VM is running.
+

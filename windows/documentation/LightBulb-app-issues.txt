@@ -1,0 +1,6 @@
+4/3/21: LightBulb night light filter Windows 10 app issues
+-----------------------
+- Cascading memory leak causes it to continually consume more memory with no apparent limit; left alone it went as high as 4GB before I shut it down.
+- Constantly uses a whopping 30W of power!!! (measured with Kill A Watt meter)
+
+Not sure what causes these issues; they were certainly not always the case.

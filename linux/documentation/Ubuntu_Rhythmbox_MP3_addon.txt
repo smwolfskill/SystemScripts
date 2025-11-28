@@ -1,0 +1,4 @@
+How to extract in MP3 format for Rhythmbox app on Ubuntu:
+install these gstreamer addons:
+---------------------------
+sudo apt-get install gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-tools

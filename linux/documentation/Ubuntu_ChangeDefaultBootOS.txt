@@ -1,0 +1,21 @@
+To change which OS loads at startup by default if the Grub menu times out (but always show the grub menu first),
+1. Use efibootmgr on Ubuntu to make sure that Ubuntu is set as the default OS to boot:
+------------
+For help:
+efibootmgr -h
+
+To change the boot order: (where XXXX is Ubuntu, YYYY probably Windows)
+efibootmgr --bootorder XXXX,YYYY,...
+
+============
+2. Use grubcustomizer on Ubuntu to change the default OS to boot if the Grub menu times out.
+------------
+sudo apt-get install grub-customizer
+
+Launch grub customizer. Under General settings, change predefined to the desired OS.
+
+    Under 'visibility', 'show menu' should most likely be checked (true).
+
+===========
+To confirm grub settings, look at /etc/default/grub
+

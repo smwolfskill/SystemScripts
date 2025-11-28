@@ -1,0 +1,7 @@
+#!/bin/bash
+# Use this script to restart gpg, which will clear the cache
+# of all entered passphrases, among other things.
+# (Note: This will just stop gpg, and it will start back up automatically when needed)
+
+gpgconf --kill gpg-agent
+

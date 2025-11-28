@@ -1,0 +1,17 @@
+How to allow a user to run a script as root 
+via sudo without needing a password:
+(e.g. how to allow a non-root user to change the power limit
+ and persistence mode for NVIDIA GPUs with nvidia-smi)
+ ======================================
+1. Create/copy script to /usr/local/sbin
+2. `sudo chown root:root [/usr/local/sbin/myScript]`
+3. `sudo chmod g-wx,o-wx [/usr/local/sbin/myScript]`
+4. Edit /etc/sudoers file to allow user access w/o password:
+`sudo visudo`
+
+Copy & Paste in:
+
+scott   ALL=NOPASSWD: /usr/local/sbin/myScript
+
+That's it!
+

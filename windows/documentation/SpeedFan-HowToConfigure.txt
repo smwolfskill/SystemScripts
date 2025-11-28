@@ -1,0 +1,23 @@
+How to Configure Speedfan:
+Detecting hardware correctly
+==========================
+For some reason SpeedFan only detects hardware correctly if it is launched after launching CPUID's HWMonitor program.
+
+==========================
+Ramping up a chassis fan speed according to GPU temp
+--------------------------
+1. Open SpeedFan 4.52 and click the Configure button near the top right.
+2. Under the first tab Temperatures, check and expand GPU and check the chassis
+   fan desired to be associated with it.
+3. Click on GPU, and set Desired and Warning temps.
+4. Under the fourth tab Speeds, click on the fan(s) associated with the GPU and
+   set Minimum value (1%) and Maximum value (something around 50-70%)
+5. ***IMPORTANT*** Switch fan control to manual mode; this can be done either in BIOS or
+   in Advanced tab, select Chip for the fan(s) (e.g. Winbond W83677HG-I...)
+   and under PWM [n] mode, set Manual for each PWM fan we'd like to control with Speedfan.
+6. Click OK.
+7. Check 'Automatic fan speed' on the main window, and observe chassis fan(s) ramp up/down
+   according to GPU temp; likely set at max or min speed.
+
+-NOTE: Advanced fan control looked promising, but I cannot figure out how to make it work.
+ It does not obey the curve set and appears to have no effect.

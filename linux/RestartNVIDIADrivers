@@ -1,0 +1,8 @@
+#!/bin/bash
+# This restarts nvidia CUDA drivers on Linux;
+# note that all CUDA programs (e.g. crypto miners)
+# must be exited prior to running the following commands.
+
+sudo rmmod nvidia_uvm
+sudo modprobe nvidia_uvm
+

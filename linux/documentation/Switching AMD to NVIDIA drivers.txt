@@ -1,0 +1,19 @@
+Switching AMD to NVIDIA drivers
+==============================
+Linux
+-------
+Scenario: 
+1. Both AMD (amdgpu-pro) and NVIDIA drivers are installed on Ubuntu 20.04.
+2. Replace single GPU slot from AMD to NVIDIA.
+3. Fail to boot Ubuntu; screens continually flicker on and off.
+
+Solution:
+1. Boot into recovery mode successfully, and go to root prompt.
+2. Run `amdgpu-pro-uninstall`
+3. Ubuntu should now boot without issues, and without need to update/reinstall NVIDIA drivers.
+4. Reinstalling amdgpu-pro with --headless argument does not break boot stability, but
+   I have not tested if it can still use the AMD card in the secondary slot with this driver install.
+
+NOTE: Changing grub config to remove AMD GPU tweaking access has no effect on boot stability. 
+This issue is entirely caused by the AMD amdgpu-pro driver.
+

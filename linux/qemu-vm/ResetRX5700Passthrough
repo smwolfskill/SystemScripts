@@ -1,0 +1,31 @@
+#!/bin/bash
+
+USER=`whoami`
+killEthMining="/media/scott/RAID1-Ubuntu/Documents/CryptoCurrency/Ethereum/Pools/killEthMining"
+
+if [ "$USER" != "root" ]
+then
+    echo "Please run this script as root. Exiting."
+    exit 1
+fi
+
+echo "Disconnecting AMD graphics"
+echo "1" | tee -a /sys/bus/pci/devices/0000\:06\:00.0/remove
+echo "Disconnecting AMD sound"
+echo "1" | tee -a /sys/bus/pci/devices/0000\:06\:00.1/remove
+echo "Entered suspended power state. Press power button to continue"
+echo -n mem > /sys/power/state
+echo "Reconnecting AMD GPU and sound"
+echo "1" | tee -a /sys/bus/pci/rescan
+echo "AMD graphics successfully reset"
+
+echo "Restarting fancontrol and NVIDIA driver after suspend"
+$killEthMining
+systemctl restart fancontrol
+
+sleep 3s    # Wait for ethminer to fully exit
+rmmod nvidia_uvm
+modprobe nvidia_uvm
+
+echo -e "NVIDIA driver restarted. Please manually resume mining.\nDone."
+

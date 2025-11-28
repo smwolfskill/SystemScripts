@@ -1,0 +1,11 @@
+How to restore Windows 10 default boot manager:
+-----------
+In command prompt as administator:
+
+bcdedit /set "{bootmgr}" path \EFI\MICROSOFT\BOOT\BOOTMGFW.EFI
+
+
+===========
+To view all entries:
+-----------
+bcdedit /enum firmware

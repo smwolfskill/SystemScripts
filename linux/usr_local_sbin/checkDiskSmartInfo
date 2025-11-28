@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DISK="$1"
+
+if [ -z "$DISK" ]
+then
+    DISK="/dev/nvme0n1"
+fi
+
+smart=$( sudo smartctl --all "$DISK" )
+echo "$smart"
+

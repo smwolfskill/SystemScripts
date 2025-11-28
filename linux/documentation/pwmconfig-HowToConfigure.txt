@@ -1,0 +1,15 @@
+hwmon1/pwm1: Top Noctua fan, exhaust            (1700 RPM)
+hwmon1/pwm2: CPU fan (leave auto)               (1800 RPM)
+hwmon1/pwm4: Fractal fan in rear, exhaust       (~2000 RPM?)
+hwmon1/pwm5: MB Chipset (leave auto)            (~4500 RPM)
+hwmon1/pwm6: Front (topmost) noctua fan, intake (1700 RPM)
+
+To apply changes, run:
+sudo systemctl restart fancontrol.service
+
+---------------
+If need to reset a fan back to automatic control, go to:
+/sys/class/hwmon/hwmon1
+
+and set pwm[n]_enable to 2 for very crude automatic control (not recommended),
+                      or 5 for more fine-tuned BIOS fan curve AFAIK (not 100% sure)

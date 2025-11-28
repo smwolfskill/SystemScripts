@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Create a virtual audio device called "Virtual_Sink"
+# Open PulseAudio Volume Control to select it as the output device for an Application under Playback
+pacmd load-module module-null-sink sink_name=Virtual_Sink sink_properties=device.description=Virtual_Sink
+

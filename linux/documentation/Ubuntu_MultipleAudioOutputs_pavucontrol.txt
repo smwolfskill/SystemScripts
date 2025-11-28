@@ -1,0 +1,4 @@
+How to use multiple audio devices simultaneously and
+set which (single) audio output device each program uses:
+---------------------------
+sudo apt-get install pavucontrol
