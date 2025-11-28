@@ -1,0 +1,33 @@
+#!/bin/bash
+# Use this script to rotate a video clockwise 90 degrees.
+# Note: ffmpeg uses the CPU and not GPU so it is somewhat slow, but not a huge deal.
+
+# WARNING: Lowers bitrate to around ~8000 kbit/s!! Need to investigate lossless conversion.
+
+print_usage () {
+    echo -e "Usage:\n$SCRIPTNAME [input file to rotate] [output file]"
+    exit 1
+}
+
+FILEIN=$1
+FILEOUT=$2
+CW=$3
+SCRIPTNAME=$( echo `basename "$0"` )
+
+if [ -v $FILEIN ] || [ -v $FILEOUT ]
+then
+    echo -e "ERROR: One or more parameters was missing. Exiting.\n"
+    print_usage
+fi
+
+if [ -v $CW ]
+then
+    CW=1
+elif [ "$CW" != "1" ] && [ "$CW" != "2" ]
+then
+    echo -e "ERROR: Third parameter must be set to 1 (for clockwise 90 deg, default) or 2 (counter-clockwise 90 deg). Exiting."
+    print_usage
+fi
+
+ffmpeg -i ${FILEIN} -filter:v transpose=${CW} -c:v libx264 -preset veryfast -crf 22 -c:a copy -metadata:s:v rotate="" ${FILEOUT}
+

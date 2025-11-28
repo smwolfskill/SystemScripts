@@ -1,0 +1,35 @@
+Fractal Design Prisma AL-12 PWM 120mm ARGB Fan: Loud whine, wobble issues
+3/19/21
+-----------------------------
+- The fan appears to wobble in its frame at lower RPM, especially below 30-35% or so
+  of its max RPM (2000)
+- Coincidentally at these same RPMs and a bit above (even up to about 55-65% of max)
+  it emits a loud, piercing whine at a high frequency that in some cases is even audible
+  from another room, behind a closed door. 
+- The typical lower-pitched white-noise fan sound gets quite louder once
+  the RPMs are above 65-70% or so, but then the high-frequency whine disappears;
+  the lower-pitched noise is much less irritating.
+- The high-frequency whine is most pronounced at 30% RPM.
+  -- A different whine is also pretty pronounced at 65%.
+  
+- As a result the fan seems to be more stable and also most pleasant to listen to
+  in the 70-100% RPM range.
+  
+Overall suggested range: 40-55%.
+- Best RPMs:
+-- 40%: Suggested min RPM
+
+
+- Tolerable RPMs:
+-- 50-55%: A bit more whine than 40% but not too bad.
+-- 70%: Not the most pleasant but not as bad as 75% or 65%.
+-- 90-100%: Typical lower-pitched fan noise is quite loud, but less whine.
+   Still pretty bad at times depending on where you stand.
+
+- Worst RPMs:
+-- 30% and under: by far
+-- 60-65%: different high-pitched whine; piercing. Can hear from other rooms.
+-- 75%: Still has a faint high-pitched whine, but the louder typical fan sound
+   mostly drowns it out.
+-- 80-85%: Still hear high-pitched whine like 75%, but even louder typical fan sound
+   on top of it.
