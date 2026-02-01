@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Kernel version:"
+uname -r
+
+echo -e "\nUbuntu version:"
+lsb_release -a
